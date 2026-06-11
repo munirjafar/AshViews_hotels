@@ -1,0 +1,192 @@
+/* ===== CUSTOM OVERRIDES & ENHANCEMENTS (no duplication, only unique tweaks) ===== */
+/* background gradient for body – compliments AdminLTE but keeps custom look */
+body {
+    background: linear-gradient(135deg, #eef2f7, #e3e9f1);
+    /* ensure full height for vertical centering */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* custom card style – works with AdminLTE card component but adds unique radius/shadow */
+.card-custom {
+    border: none;
+    border-radius: 28px;
+    box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease;
+    overflow: hidden;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* inner body styling: we reuse AdminLTE card-body but add padding and fadeIn */
+.login-card-body {
+    padding: 2rem 1.8rem;
+    animation: fadeInUp 0.55s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+/* custom heading gradient – not conflicting with any AdminLTE default */
+.brand-heading {
+    font-weight: 800;
+    margin: 0 0 0.25rem 0;
+    font-size: 1.75rem;
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    letter-spacing: -0.3px;
+}
+
+/* subtle divider */
+.custom-divider {
+    height: 2px;
+    background: linear-gradient(90deg, #007bff20, #007bff80, #007bff20);
+    width: 60px;
+    margin: 0.75rem auto 1.25rem auto;
+    border: 0;
+}
+
+/* Custom input group enhancements – preserve accessibility and mobile touch size */
+.input-group-custom .form-control {
+    border-radius: 14px 0 0 14px;
+    border-right: none;
+    height: 48px;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.input-group-custom .input-group-text {
+    border-radius: 0 14px 14px 0;
+    background-color: #f8fafd;
+    border-left: none;
+    color: #6c757d;
+}
+
+.input-group-custom .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+    z-index: 3;
+}
+
+/* modern login button */
+.btn-login-modern {
+    border-radius: 40px;
+    font-weight: 600;
+    height: 50px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 1rem;
+    letter-spacing: 0.3px;
+    border: none;
+    background: linear-gradient(95deg, #007bff, #0069d9);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+.btn-login-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px -10px rgba(0, 123, 255, 0.4);
+    background: linear-gradient(95deg, #0069d9, #005cbf);
+}
+
+/* loading state */
+.btn-login-modern.loading {
+    pointer-events: none;
+    opacity: 0.85;
+    transform: scale(0.98);
+}
+
+.btn-login-modern.loading .btn-text {
+    display: none;
+}
+
+.btn-spinner {
+    display: none;
+    width: 22px;
+    height: 22px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+.btn-login-modern.loading .btn-spinner {
+    display: inline-block;
+}
+
+/* keyframe animations */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* responsive refinements – mobile first, uses AdminLTE grid & spacing but extra polish */
+@media (max-width: 576px) {
+    body {
+        padding: 0.75rem;
+        align-items: center;
+    }
+
+    .login-card-body {
+        padding: 1.5rem 1.2rem;
+    }
+
+    .brand-heading {
+        font-size: 1.45rem;
+    }
+
+    .input-group-custom .form-control {
+        height: 46px;
+        font-size: 0.95rem;
+    }
+
+    .btn-login-modern {
+        height: 46px;
+        font-size: 0.9rem;
+    }
+
+    .card-custom {
+        border-radius: 24px;
+    }
+}
+
+/* for very small devices, extra breathing */
+@media (max-width: 380px) {
+    .login-card-body {
+        padding: 1.25rem 1rem;
+    }
+
+    .brand-heading {
+        font-size: 1.3rem;
+    }
+}
+
+/* ensure alert messages match AdminLTE style but are readable */
+.alert-custom {
+    border-radius: 16px;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+/* remove any default duplications: we don't redefine card, btn-primary etc.
+           only unique components. AdminLTE already has .form-control, .input-group, etc.
+           we just ensure overrides are minimal and non-conflicting *
