@@ -1,0 +1,438 @@
+/* =========================
+   HOTEL SIDEBAR
+========================= */
+
+.hotel-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    z-index: 1038;
+    background: linear-gradient(
+        180deg,
+        #16213e 0%,
+        #0f3460 50%,
+        #1b262c 100%
+    );
+    overflow: hidden;
+}
+
+/* =========================
+   BRAND
+========================= */
+
+.brand-link {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(0,0,0,.15);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.brand-icon {
+    font-size: 28px;
+    color: #ffc107;
+}
+
+.brand-text {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+
+/* =========================
+   SCROLLABLE SIDEBAR
+========================= */
+
+.hotel-sidebar .sidebar {
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 20px;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.form-control-sidebar {
+    background: rgba(255,255,255,.08);
+    border: none;
+    color: #fff;
+}
+
+.form-control-sidebar::placeholder {
+    color: rgba(255,255,255,.5);
+}
+
+.btn-sidebar {
+    background: rgba(255,255,255,.08);
+    color: #fff;
+    border: none;
+}
+
+/* =========================
+   MENU LINKS
+========================= */
+
+.nav-sidebar .nav-link {
+    margin: 3px 10px;
+    border-radius: 10px;
+    color: #d9e4ec;
+    transition: all .25s ease;
+    display: flex;
+    align-items: center;
+}
+
+.nav-sidebar .nav-link:hover {
+    background: rgba(255,255,255,.08);
+    color: #fff;
+    transform: translateX(4px);
+}
+
+/* Active Menu */
+
+.nav-sidebar .nav-link.active {
+    background: linear-gradient(
+        90deg,
+        #00c6ff,
+        #0072ff
+    );
+    color: #fff !important;
+    box-shadow: 0 4px 15px rgba(0,114,255,.35);
+}
+
+/* Icons */
+
+.nav-sidebar .nav-icon {
+    font-size: 20px;
+    min-width: 30px;
+    margin-right: 8px;
+}
+
+/* Headers */
+
+.nav-header {
+    color: rgba(255,255,255,.45);
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-top: 15px;
+    padding-left: 18px;
+}
+
+/* Logout */
+
+.logout-link {
+    color: #ffb3b3 !important;
+}
+
+.logout-link:hover {
+    background: rgba(220,53,69,.15) !important;
+    color: #ff6b6b !important;
+}
+
+/* =========================
+   CUSTOM SCROLLBAR
+========================= */
+
+/* Chrome / Edge / Safari */
+
+.hotel-sidebar .sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.hotel-sidebar .sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.hotel-sidebar .sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.18);
+    border-radius: 20px;
+}
+
+.hotel-sidebar .sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,.35);
+}
+
+/* Firefox */
+
+.hotel-sidebar .sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,.25) transparent;
+}
+
+/* =========================
+   CONTENT OFFSET
+========================= */
+
+.content-wrapper,
+.main-footer,
+.main-header {
+    margin-left: 250px;
+}
+
+.hotel-sidebar .sidebar::-webkit-scrollbar {
+    width: 0;
+}
+
+.hotel-sidebar:hover .sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* =========================
+   PROFILE NAVBAR
+========================= */
+
+.user-profile {
+    display: flex !important;
+    align-items: center;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.profile-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* =========================
+   AVATAR
+========================= */
+
+.user-avatar-wrapper {
+    position: relative;
+}
+
+.user-avatar {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #0072ff,
+        #00c6ff
+    );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+}
+
+.user-avatar ion-icon {
+    font-size: 20px;
+}
+
+/* Large Avatar In Dropdown */
+
+.large-avatar {
+    width: 55px;
+    height: 55px;
+}
+
+.large-avatar ion-icon {
+    font-size: 26px;
+}
+
+/* =========================
+   ONLINE INDICATOR
+========================= */
+
+.online-indicator {
+    position: absolute;
+
+    left: -2px;
+    bottom: 2px;
+
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+
+    background: #28a745;
+
+    border: 2px solid #fff;
+
+    box-shadow:
+        0 0 0 2px rgba(40,167,69,.15);
+}
+
+/* =========================
+   USER INFO
+========================= */
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    line-height: 1.15;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #2c3e50;
+}
+
+.user-info small {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+/* =========================
+   DROPDOWN
+========================= */
+
+.profile-dropdown {
+    min-width: 260px;
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.dropdown-header {
+    background: linear-gradient(
+        135deg,
+        #0072ff,
+        #00c6ff
+    );
+
+    color: white;
+    padding: 15px;
+}
+
+.dropdown-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dropdown-profile h6 {
+    color: white;
+}
+
+.dropdown-profile small {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: rgba(255,255,255,.85);
+}
+
+.dropdown-profile ion-icon {
+    font-size: 10px;
+}
+
+/* =========================
+   MENU ITEMS
+========================= */
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 15px;
+
+    transition: all .2s ease;
+}
+
+.dropdown-item ion-icon {
+    font-size: 18px;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+    padding-left: 20px;
+}
+
+/* Logout */
+
+.dropdown-item.text-danger:hover {
+    background: rgba(220,53,69,.08);
+}
+
+.staff-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.btn ion-icon {
+    font-size: 18px;
+}
+
+input[readonly] {
+    background: #f8f9fa !important;
+    cursor: not-allowed;
+    font-weight: 600;
+    color: #0072ff;
+}
+
+.validation-error {
+    font-size: 12px;
+    color: #dc3545;
+    display: block;
+    margin-top: 4px;
+}
+
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.is-valid {
+    border-color: #28a745 !important;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.form-control {
+    border-radius: 8px;
+    min-height: 42px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .user-info {
+        display: none !important;
+    }
+
+    .profile-dropdown {
+        min-width: 220px;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 991px) {
+    .content-wrapper,
+    .main-footer,
+    .main-header {
+        margin-left: 0;
+    }
+}

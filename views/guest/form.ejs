@@ -1,0 +1,404 @@
+﻿<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Guest Booking</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="/rooms">Rooms</a></li>
+          <li class="breadcrumb-item active">Booking</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="callout callout-info">
+          <h5>Complete booking</h5>
+          <p>Selected room details are loaded from the room page. If the room is not selected, you will be redirected back to rooms.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-10 offset-lg-1">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Guest booking form</h3>
+          </div>
+          <form method="POST" action="/guests" id="bookingForm">
+            <div class="card-body">
+              <% if (guest) { %>
+                <input type="hidden" name="id" value="<%= guest.id %>">
+              <% } %>
+
+              <div id="roomSummary" class="alert alert-success d-none"></div>
+
+              <input type="hidden" name="roomId" id="roomId">
+              <input type="hidden" name="roomNumber" id="roomNumber">
+              <input type="hidden" name="roomName" id="roomName">
+              <input type="hidden" name="roomPrice" id="roomPrice">
+              <input type="hidden" name="roomDiscount" id="roomDiscount">
+
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label for="fullname">Full Name <span class="text-danger">*</span></label>
+                  <input type="text" name="fullname" id="fullname" value="<%= guest ? guest.fullname : '' %>" required minlength="3" pattern="[a-zA-Z\s]+" placeholder="Enter full name" class="form-control form-control-border">
+                  <span id="fullnameError" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="email">Email <span class="text-danger">*</span></label>
+                  <input type="email" name="email" id="email" value="<%= guest ? guest.email : '' %>" required placeholder="example@email.com" class="form-control form-control-border">
+                  <span id="emailError" class="text-danger small"></span>
+                  <span id="emailSuccess" class="text-success small d-none"></span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label for="mobile">Mobile <span class="text-danger">*</span></label>
+                  <input type="tel" name="mobile" id="mobile" value="<%= guest ? guest.mobile : '' %>" required pattern="[0-9\+\-\(\)\s]+" minlength="10" placeholder="0803 000 0000" class="form-control form-control-border">
+                  <span id="mobileError" class="text-danger small"></span>
+                  <span id="mobileSuccess" class="text-success small d-none"></span>
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="gender">Gender</label>
+                  <select name="gender" id="gender" class="form-control form-control-border">
+                    <option value="">Select Gender</option>
+                    <option value="Male" <%= guest && guest.gender==='Male' ? 'selected' : '' %>>Male</option>
+                    <option value="Female" <%= guest && guest.gender==='Female' ? 'selected' : '' %>>Female</option>
+                    <option value="Other" <%= guest && guest.gender==='Other' ? 'selected' : '' %>>Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="address">Address</label>
+                <textarea name="address" id="address" rows="3" maxlength="500" class="form-control form-control-border" placeholder="Enter guest address"><%= guest ? guest.address : '' %></textarea>
+                <small class="text-muted">Maximum 500 characters</small>
+              </div>
+
+              <hr>
+
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label for="bookingType">Booking Type <span class="text-danger">*</span></label>
+                  <select name="bookingType" id="bookingType" required class="form-control form-control-border">
+                    <option value="">Select Booking Type</option>
+                    <option value="checkin">Check-in</option>
+                    <option value="reservation">Reservation</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label>Selected Room</label>
+                  <input type="text" id="selectedRoomText" class="form-control form-control-border" readonly>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label for="checkinDate">Check-in Date <span class="badge badge-info ml-1">System</span></label>
+                  <input type="date" name="checkinDate" id="checkinDate" readonly class="form-control form-control-border bg-light">
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="checkinTime">Check-in Time <span class="badge badge-info ml-1">System</span></label>
+                  <input type="time" name="checkinTime" id="checkinTime" readonly class="form-control form-control-border bg-light">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label for="checkoutDate">Checkout Date <span class="text-danger">*</span></label>
+                  <input type="date" name="checkoutDate" id="checkoutDate" required class="form-control form-control-border">
+                  <span id="checkoutDateError" class="text-danger small d-block"></span>
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="checkoutTime">Checkout Time <span class="text-danger">*</span></label>
+                  <input type="time" name="checkoutTime" id="checkoutTime" required class="form-control form-control-border">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Payment Method <span class="text-danger">*</span></label>
+                <div class="d-flex flex-wrap">
+                  <div class="custom-control custom-radio mr-4">
+                    <input class="custom-control-input" type="radio" id="paymentCash" name="paymentMethod" value="cash" required>
+                    <label for="paymentCash" class="custom-control-label">Cash on Desk</label>
+                  </div>
+                  <div class="custom-control custom-radio mr-4">
+                    <input class="custom-control-input" type="radio" id="paymentTransfer" name="paymentMethod" value="transfer">
+                    <label for="paymentTransfer" class="custom-control-label">Bank Transfer</label>
+                  </div>
+                  <div class="custom-control custom-radio mr-4">
+                    <input class="custom-control-input" type="radio" id="paymentOnline" name="paymentMethod" value="online">
+                    <label for="paymentOnline" class="custom-control-label">Online Payment</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card card-secondary">
+                <div class="card-header">
+                  <h3 class="card-title">Pricing Summary</h3>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <div class="d-flex justify-content-between align-items-center border p-3 rounded bg-white">
+                        <span>Room Rate (per night):</span>
+                        <strong id="roomRate">₦0</strong>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="d-flex justify-content-between align-items-center border p-3 rounded bg-white">
+                        <span>Total Days:</span>
+                        <strong id="totalDays">0 nights</strong>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="d-flex justify-content-between align-items-center border p-3 rounded bg-white">
+                        <span>Base Cost:</span>
+                        <strong id="baseCost">₦0</strong>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="d-flex justify-content-between align-items-center border p-3 rounded bg-light">
+                        <span class="text-success">Discount Applied:</span>
+                        <strong id="discountAmount" class="text-success">-₦0</strong>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="d-flex justify-content-between align-items-center border p-3 rounded bg-white">
+                        <span>Subtotal (after discount):</span>
+                        <strong id="subtotal">₦0</strong>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="d-flex justify-content-between align-items-center border p-3 rounded bg-white">
+                        <span>VAT (0.75%):</span>
+                        <strong id="vatAmount">₦0</strong>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="d-flex justify-content-between align-items-center border p-4 rounded bg-primary text-white">
+                        <span class="font-weight-bold">Total Amount:</span>
+                        <span id="totalAmount" class="h4 font-weight-bold">₦0</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <input type="hidden" name="totalAmount" id="totalAmountHidden">
+            </div>
+            <div class="card-footer text-right">
+              <button type="submit" class="btn btn-primary">Save Booking</button>
+              <a href="/rooms" class="btn btn-default ml-2">Back to rooms</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function formatNaira(value) {
+  return '₦' + Number(value).toLocaleString('en-NG', { maximumFractionDigits: 2 });
+}
+
+function setSystemDateTime() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  document.getElementById('checkinDate').value = `${year}-${month}-${day}`;
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('checkinTime').value = `${hours}:${minutes}`;
+}
+
+function initSelectedRoom() {
+  const selectedRoomData = sessionStorage.getItem('selectedRoom');
+  if (!selectedRoomData) {
+    window.location.href = '/rooms';
+    return;
+  }
+
+  const room = JSON.parse(selectedRoomData);
+  const summary = document.getElementById('roomSummary');
+  summary.classList.remove('d-none');
+  summary.innerHTML = `
+    <h5 class="mb-2">Selected Room</h5>
+    <p><strong>${room.roomNumber} - ${room.roomName}</strong></p>
+    <p>Price per night: ${formatNaira(room.price)}</p>
+    ${room.discount && room.discount > 0 ? `<p class="text-success"><strong>${room.discount}% OFF</strong></p>` : ''}
+    ${room.amenities ? `<p class="mb-0"><strong>Amenities:</strong> ${room.amenities}</p>` : ''}
+  `;
+
+  document.getElementById('selectedRoomText').value = `${room.roomNumber} - ${room.roomName}`;
+  document.getElementById('roomId').value = room.id;
+  document.getElementById('roomNumber').value = room.roomNumber;
+  document.getElementById('roomName').value = room.roomName;
+  document.getElementById('roomPrice').value = room.price;
+  document.getElementById('roomDiscount').value = room.discount || 0;
+  document.getElementById('roomRate').textContent = formatNaira(room.price);
+}
+
+function attachValidationListeners() {
+  const emailInput = document.getElementById('email');
+  const mobileInput = document.getElementById('mobile');
+
+  emailInput.addEventListener('blur', async function() {
+    const email = this.value.trim();
+    const errorSpan = document.getElementById('emailError');
+    const successSpan = document.getElementById('emailSuccess');
+
+    if (!email) {
+      errorSpan.textContent = '';
+      successSpan.textContent = '';
+      successSpan.classList.add('d-none');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      errorSpan.textContent = 'Invalid email format';
+      successSpan.textContent = '';
+      successSpan.classList.add('d-none');
+      return;
+    }
+
+    try {
+      const response = await fetch('/guests/api/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, guestId: document.querySelector('input[name="id"]')?.value })
+      });
+      const data = await response.json();
+      if (data.exists) {
+        errorSpan.textContent = 'Email already registered';
+        successSpan.textContent = '';
+        successSpan.classList.add('d-none');
+      } else {
+        errorSpan.textContent = '';
+        successSpan.textContent = 'Email available';
+        successSpan.classList.remove('d-none');
+      }
+    } catch (error) {
+      console.error('Error checking email:', error);
+    }
+  });
+
+  mobileInput.addEventListener('blur', async function() {
+    const mobile = this.value.trim();
+    const errorSpan = document.getElementById('mobileError');
+    const successSpan = document.getElementById('mobileSuccess');
+
+    if (!mobile) {
+      errorSpan.textContent = '';
+      successSpan.textContent = '';
+      successSpan.classList.add('d-none');
+      return;
+    }
+
+    const mobileRegex = /^[0-9\+\-\(\)\s]{10,}$/;
+    if (!mobileRegex.test(mobile)) {
+      errorSpan.textContent = 'Mobile must be at least 10 digits';
+      successSpan.textContent = '';
+      successSpan.classList.add('d-none');
+      return;
+    }
+
+    try {
+      const response = await fetch('/guests/api/check-mobile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobile, guestId: document.querySelector('input[name="id"]')?.value })
+      });
+      const data = await response.json();
+      if (data.exists) {
+        errorSpan.textContent = 'Mobile number already registered';
+        successSpan.textContent = '';
+        successSpan.classList.add('d-none');
+      } else {
+        errorSpan.textContent = '';
+        successSpan.textContent = 'Mobile available';
+        successSpan.classList.remove('d-none');
+      }
+    } catch (error) {
+      console.error('Error checking mobile:', error);
+    }
+  });
+}
+
+function validateCheckoutDate() {
+  const checkin = new Date(document.getElementById('checkinDate').value);
+  const checkout = new Date(document.getElementById('checkoutDate').value);
+  const errorSpan = document.getElementById('checkoutDateError');
+
+  if (checkout <= checkin) {
+    errorSpan.textContent = 'Checkout date must be after check-in date';
+    return false;
+  }
+
+  errorSpan.textContent = '';
+  return true;
+}
+
+function calculatePricing() {
+  const price = Number(document.getElementById('roomPrice').value) || 0;
+  const discount = Number(document.getElementById('roomDiscount').value) || 0;
+  const checkin = new Date(document.getElementById('checkinDate').value);
+  const checkout = new Date(document.getElementById('checkoutDate').value);
+  if (!document.getElementById('checkoutDate').value || checkout <= checkin) {
+    document.getElementById('totalDays').textContent = '0 nights';
+    document.getElementById('baseCost').textContent = '₦0';
+    document.getElementById('discountAmount').textContent = '-₦0';
+    document.getElementById('subtotal').textContent = '₦0';
+    document.getElementById('vatAmount').textContent = '₦0';
+    document.getElementById('totalAmount').textContent = '₦0';
+    return;
+  }
+
+  const nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+  const baseCost = price * nights;
+  const discountValue = (baseCost * discount) / 100;
+  const subtotal = baseCost - discountValue;
+  const vatAmount = subtotal * 0.0075;
+  const total = subtotal + vatAmount;
+
+  document.getElementById('totalDays').textContent = `${nights} night${nights > 1 ? 's' : ''}`;
+  document.getElementById('baseCost').textContent = formatNaira(baseCost);
+  document.getElementById('discountAmount').textContent = `-${formatNaira(discountValue)}`;
+  document.getElementById('subtotal').textContent = formatNaira(subtotal);
+  document.getElementById('vatAmount').textContent = formatNaira(vatAmount);
+  document.getElementById('totalAmount').textContent = formatNaira(total);
+  document.getElementById('totalAmountHidden').value = total.toFixed(2);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  setSystemDateTime();
+  initSelectedRoom();
+  attachValidationListeners();
+  document.getElementById('checkoutDate').addEventListener('change', function() {
+    validateCheckoutDate();
+    calculatePricing();
+  });
+  document.getElementById('bookingForm').addEventListener('submit', function(event) {
+    if (!validateCheckoutDate()) {
+      event.preventDefault();
+    }
+  });
+});
+</script>

@@ -1,0 +1,23 @@
+<h1 class="text-2xl font-bold mb-4 flex items-center gap-2">
+  <ion-icon name="document-text-outline"></ion-icon> Card Logs
+</h1>
+<div class="overflow-x-auto">
+  <table class="min-w-full bg-white border">
+    <thead>
+      <tr><th>Time</th><th>Room</th><th>Card Type</th><th>Card ID</th><th>Start Date</th><th>End Date</th><th>Success</th><th>Error</th></tr>
+    </thead>
+    <tbody>
+      <% logs.forEach(log => { %>
+        <tr><td class="py-2 px-3 border-b"><%= new Date(log.writtenAt).toLocaleString() %></td>
+          <td class="py-2 px-3 border-b"><%= log.roomNumber || '-' %></td>
+          <td class="py-2 px-3 border-b"><%= log.cardType %></td>
+          <td class="py-2 px-3 border-b"><%= log.cardId || '-' %></td>
+          <td class="py-2 px-3 border-b"><%= log.startDate || '-' %></td>
+          <td class="py-2 px-3 border-b"><%= log.endDate || '-' %></td>
+          <td class="py-2 px-3 border-b"><%= log.success ? '✅' : '❌' %></td>
+          <td class="py-2 px-3 border-b text-red-600"><%= log.errorMessage || '-' %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

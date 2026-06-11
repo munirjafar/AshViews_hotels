@@ -1,0 +1,118 @@
+<nav class="main-header navbar navbar-expand navbar-light hotel-navbar">
+
+    <!-- Left -->
+    <ul class="navbar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link menu-toggle" data-widget="pushmenu" href="#" role="button">
+                <ion-icon name="menu-outline"></ion-icon>
+            </a>
+        </li>
+
+        <li class="nav-item d-none d-md-flex align-items-center">
+            <span class="navbar-title">
+                <ion-icon name="business-outline"></ion-icon>
+                Hotel Management System
+            </span>
+        </li>
+
+    </ul>
+
+    <!-- Right -->
+    <ul class="navbar-nav ml-auto align-items-center">
+
+        <!-- Search -->
+        <li class="nav-item mr-2">
+            <a href="#" class="nav-link nav-action">
+                <ion-icon name="search-outline"></ion-icon>
+            </a>
+        </li>
+
+        <!-- Notifications -->
+        <li class="nav-item dropdown mr-2">
+            <a href="#" class="nav-link nav-action position-relative">
+
+                <ion-icon name="notifications-outline"></ion-icon>
+
+                <span class="badge badge-danger navbar-badge">
+                    3
+                </span>
+
+            </a>
+        </li>
+
+        <!-- Theme Switch -->
+        <li class="nav-item mr-3">
+            <div class="theme-switch-wrapper nav-link">
+                <label class="theme-switch">
+                    <input type="checkbox" id="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </li>
+
+        <li class="nav-item dropdown">
+
+            <a class="nav-link user-profile dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+
+                <div class="profile-wrapper">
+
+                    <div class="user-avatar-wrapper">
+                        <div class="user-avatar">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </div>
+
+                        <span class="online-indicator"></span>
+                    </div>
+
+                    <div class="user-info">
+                        <span class="user-name">Administrator</span>
+                        <small>System Admin</small>
+                    </div>
+
+                </div>
+
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right shadow border-0" aria-labelledby="userDropdown">
+
+                <div class="dropdown-header text-center">
+                    <strong>Administrator</strong>
+                    <br>
+                    <small class="text-success">
+                        Online
+                    </small>
+                </div>
+
+                <div class="dropdown-divider"></div>
+
+                <a href="/profile" class="dropdown-item">
+                    <ion-icon name="person-circle-outline"></ion-icon>
+                    My Profile
+                </a>
+
+                <a href="/settings" class="dropdown-item">
+                    <ion-icon name="settings-outline"></ion-icon>
+                    Settings
+                </a>
+
+                <a href="/activity" class="dropdown-item">
+                    <ion-icon name="time-outline"></ion-icon>
+                    Activity Log
+                </a>
+
+                <div class="dropdown-divider"></div>
+
+                <a href="/logout" class="dropdown-item text-danger">
+                    <ion-icon name="power-outline"></ion-icon>
+                    Logout
+                </a>
+
+            </div>
+
+        </li>
+
+    </ul>
+
+</nav>

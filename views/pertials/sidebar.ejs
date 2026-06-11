@@ -1,0 +1,122 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4 hotel-sidebar">
+
+    <!-- Brand (fixed/sticky area) -->
+    <a href="/" class="brand-link text-center">
+        <ion-icon name="business-outline" class="brand-icon"></ion-icon>
+        <span class="brand-text">Hotel Manager</span>
+    </a>
+
+    <!-- Scrollable area -->
+    <div class="sidebar">
+
+        <!-- Search -->
+        <div class="form-inline mt-3 mb-3 px-2">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar"
+                       type="search"
+                       placeholder="Search..."
+                       aria-label="Search">
+
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <ion-icon name="search-outline"></ion-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column">
+
+                <li class="nav-item">
+                    <a href="/" class="nav-link <%= isActive('/') %>">
+                        <ion-icon name="speedometer-outline" class="nav-icon"></ion-icon>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/rooms" class="nav-link <%= isActive('/rooms') %>">
+                        <ion-icon name="bed-outline" class="nav-icon"></ion-icon>
+                        <p>Rooms</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/guests" class="nav-link <%= isActive('/guests') %>">
+                        <ion-icon name="people-outline" class="nav-icon"></ion-icon>
+                        <p>Guests</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/staff" class="nav-link <%= isActive('/staff') %>">
+                        <ion-icon name="people-circle-outline" class="nav-icon"></ion-icon>
+                        <p>Staff</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/reservations" class="nav-link <%= isActive('/reservations') %>">
+                        <ion-icon name="calendar-outline" class="nav-icon"></ion-icon>
+                        <p>Reservations</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/checkin" class="nav-link <%= isActive('/checkin') %>">
+                        <ion-icon name="log-in-outline" class="nav-icon"></ion-icon>
+                        <p>Check In</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/checkout" class="nav-link <%= isActive('/checkout') %>">
+                        <ion-icon name="log-out-outline" class="nav-icon"></ion-icon>
+                        <p>Check Out</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/extends" class="nav-link <%= isActive('/extends') %>">
+                        <ion-icon name="time-outline" class="nav-icon"></ion-icon>
+                        <p>Extensions</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/transactions" class="nav-link <%= isActive('/transactions') %>">
+                        <ion-icon name="card-outline" class="nav-icon"></ion-icon>
+                        <p>Transactions</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/card-logs" class="nav-link <%= isActive('/card-logs') %>">
+                        <ion-icon name="reader-outline" class="nav-icon"></ion-icon>
+                        <p>Card Logs</p>
+                    </a>
+                </li>
+
+                <li class="nav-header">ACCOUNT</li>
+
+                <li class="nav-item">
+                    <a href="/profile" class="nav-link <%= isActive('/profile') %>">
+                        <ion-icon name="person-circle-outline" class="nav-icon"></ion-icon>
+                        <p>Profile</p>
+                    </a>
+                </li>
+
+                <li class="nav-item mt-3">
+                    <a href="/logout" class="nav-link logout-link">
+                        <ion-icon name="power-outline" class="nav-icon"></ion-icon>
+                        <p>Logout</p>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </div>
+</aside>

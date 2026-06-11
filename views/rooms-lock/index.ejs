@@ -1,0 +1,44 @@
+<h1 class="text-2xl font-bold mb-4 flex items-center gap-2">
+  <ion-icon name="lock-closed-outline"></ion-icon> Room Locks
+</h1>
+
+<!-- Form to add/update lock -->
+<div class="bg-gray-50 p-4 rounded mb-6">
+  <h2 class="font-bold mb-2">Add/Update Lock Info</h2>
+  <form method="POST" action="/room-locks" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+    <select name="roomId" required class="border rounded p-2">
+      <option value="">Select Room</option>
+      <% rooms.forEach(room => { %>
+        <option value="<%= room.id %>"><%= room.roomNumber %> - <%= room.roomName %></option>
+      <% }) %>
+    </select>
+    <input type="text" name="lockSerial" placeholder="Serial Number" class="border rounded p-2">
+    <input type="number" name="batteryLevel" placeholder="Battery % (0-100)" min="0" max="100" class="border rounded p-2">
+    <input type="text" name="firmwareVersion" placeholder="Firmware" class="border rounded p-2">
+    <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded col-span-1">Save</button>
+  </form>
+</div>
+
+<!-- List existing locks -->
+<div class="overflow-x-auto">
+  <table class="min-w-full bg-white border">
+    <thead>
+      <tr><th>Room</th><th>Serial</th><th>Battery</th><th>Firmware</th><th>Last Sync</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      <% locks.forEach(lock => { %>
+        <tr><td class="py-2 px-3 border-b"><%= lock.roomNumber %> (<%= lock.roomName %>)</td>
+          <td class="py-2 px-3 border-b"><%= lock.lockSerial || '-' %></td>
+          <td class="py-2 px-3 border-b"><%= lock.batteryLevel ? lock.batteryLevel+'%' : '-' %></td>
+          <td class="py-2 px-3 border-b"><%= lock.firmwareVersion || '-' %></td>
+          <td class="py-2 px-3 border-b"><%= lock.lastSync ? new Date(lock.lastSync).toLocaleString() : '-' %></td>
+          <td class="py-2 px-3 border-b">
+            <form method="POST" action="/room-locks/<%= lock.roomId %>/delete" onsubmit="return confirm('Delete lock record?')">
+              <button type="submit" class="text-red-600">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

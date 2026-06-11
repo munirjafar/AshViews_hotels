@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>500 - Server Error</title>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1b262c, #0f3460);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .error-box {
+            text-align: center;
+        }
+
+        .error-icon {
+            font-size: 90px;
+            color: #ff4d4d;
+        }
+
+        h1 {
+            font-size: 90px;
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+
+        .btn {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background: #ff4d4d;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: #e63b3b;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="error-box">
+    <ion-icon name="skull-outline" class="error-icon"></ion-icon>
+
+    <h1>500</h1>
+    <p>Something went wrong on our server.</p>
+
+    <a href="/" class="btn">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

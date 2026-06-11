@@ -1,0 +1,458 @@
+<form action="/staffs/create" method="POST" enctype="multipart/form-data">
+
+    <!-- STAFF INFORMATION -->
+    <div class="card card-primary mb-4">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                <ion-icon name="person-outline"></ion-icon>
+                Staff Information
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Staff ID</label>
+
+                        <input type="text"
+                               class="form-control"
+                               value="<%= staffId %>"
+                               readonly>
+
+                        <small class="text-muted">
+                            Generated automatically by the system.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+
+                        <input type="text"
+                               name="fullname"
+                               class="form-control"
+                               placeholder="John Doe"
+                               required>
+
+                        <small class="text-muted">
+                            Enter the employee's legal name.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Gender *</label>
+
+                        <select name="gender"
+                                class="form-control"
+                                required>
+
+                            <option value="">
+                                Select Gender
+                            </option>
+
+                            <option>Male</option>
+                            <option>Female</option>
+
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+
+                        <input type="date"
+                               name="dob"
+                               class="form-control">
+
+                        <small class="text-muted">
+                            Used for staff records.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Nationality</label>
+
+                        <input type="text"
+                               name="nationality"
+                               class="form-control"
+                               placeholder="Nigerian">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Marital Status</label>
+
+                        <select name="marital_status"
+                                class="form-control">
+
+                            <option>Single</option>
+                            <option>Married</option>
+                            <option>Divorced</option>
+                            <option>Widowed</option>
+
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CONTACT INFORMATION -->
+    <div class="card mb-4">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                <ion-icon name="call-outline"></ion-icon>
+                Contact Information
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Mobile Number *</label>
+
+                        <input type="tel"
+                               name="mobile"
+                               class="form-control"
+                               placeholder="+2348012345678"
+                               required>
+
+                        <small class="text-muted">
+                            Enter an active phone number.
+                        </small>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Email Address *</label>
+
+                        <input type="email"
+                               name="email"
+                               class="form-control"
+                               placeholder="staff@example.com"
+                               required>
+
+                        <small class="text-muted">
+                            Used for login and notifications.
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Residential Address *</label>
+
+                <textarea name="address"
+                          rows="3"
+                          class="form-control"
+                          required></textarea>
+
+                <small class="text-muted">
+                    Include city, state and country.
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- EMPLOYMENT -->
+    <div class="card mb-4">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                <ion-icon name="briefcase-outline"></ion-icon>
+                Employment Information
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label>Department *</label>
+
+                        <select name="department"
+                                class="form-control">
+
+                            <option>Front Desk</option>
+                            <option>Housekeeping</option>
+                            <option>Finance</option>
+                            <option>Security</option>
+                            <option>Maintenance</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label>Role *</label>
+
+                        <select name="role"
+                                class="form-control">
+
+                            <option>Administrator</option>
+                            <option>Manager</option>
+                            <option>Receptionist</option>
+                            <option>Accountant</option>
+                            <option>Housekeeping</option>
+                            <option>Security</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label>Employment Date</label>
+
+                        <input type="date"
+                               name="employment_date"
+                               class="form-control">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ACCOUNT SETTINGS -->
+    <div class="card mb-4">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                <ion-icon name="shield-checkmark-outline"></ion-icon>
+                Account Settings
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label>Status</label>
+
+                        <select name="status"
+                                class="form-control">
+
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Suspended">Suspended</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="custom-control custom-switch mt-4">
+
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               id="account_verified"
+                               name="account_verified">
+
+                        <label class="custom-control-label"
+                               for="account_verified">
+
+                            Account Verified
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="custom-control custom-switch mt-4">
+
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               id="email_verified"
+                               name="email_verified">
+
+                        <label class="custom-control-label"
+                               for="email_verified">
+
+                            Email Verified
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div class="card mb-4">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                <ion-icon name="document-attach-outline"></ion-icon>
+                Documents
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Profile Photo</label>
+
+                        <input type="file"
+                               name="photo"
+                               accept="image/*"
+                               class="form-control-file">
+
+                        <small class="text-muted">
+                            Upload a recent passport photograph.
+                        </small>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Curriculum Vitae (CV)</label>
+
+                        <input type="file"
+                               name="cv"
+                               accept=".pdf,.doc,.docx"
+                               class="form-control-file">
+
+                        <small class="text-muted">
+                            Accepted formats: PDF, DOC, DOCX.
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- EMERGENCY CONTACT -->
+    <div class="card mb-4">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                <ion-icon name="medkit-outline"></ion-icon>
+                Emergency Contact
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Contact Name</label>
+
+                        <input type="text"
+                               name="emergency_name"
+                               class="form-control"
+                               placeholder="Next of kin">
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Contact Phone</label>
+
+                        <input type="text"
+                               name="emergency_phone"
+                               class="form-control"
+                               placeholder="+2348012345678">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="text-right mb-5">
+
+        <button type="reset"
+                class="btn btn-secondary">
+
+            <ion-icon name="refresh-outline"></ion-icon>
+            Reset
+
+        </button>
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            <ion-icon name="save-outline"></ion-icon>
+            Create Staff
+
+        </button>
+
+    </div>
+
+</form>

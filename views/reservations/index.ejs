@@ -1,0 +1,24 @@
+<h1 class="text-2xl font-bold mb-4 flex items-center gap-2">
+  <ion-icon name="calendar-outline"></ion-icon> All Reservations
+</h1>
+<div class="overflow-x-auto">
+  <table class="min-w-full bg-white border">
+    <thead>
+      <tr><th>ID</th><th>Room</th><th>Guest</th><th>Check-in</th><th>Check-out</th><th>Days</th><th>Total</th><th>Status</th><th>Payment</th></tr>
+    </thead>
+    <tbody>
+      <% reservations.forEach(r => { %>
+        <tr><td class="py-2 px-3 border-b"><%= r.id %></td>
+          <td class="py-2 px-3 border-b"><%= r.roomNumber %> (<%= r.roomName %>)</td>
+          <td class="py-2 px-3 border-b"><%= r.guestName %><br><small><%= r.email %></small></td>
+          <td class="py-2 px-3 border-b"><%= r.checkinDate %></td>
+          <td class="py-2 px-3 border-b"><%= r.checkoutDate %></td>
+          <td class="py-2 px-3 border-b"><%= r.days %></td>
+          <td class="py-2 px-3 border-b">$<%= r.total %></td>
+          <td class="py-2 px-3 border-b"><span class="px-2 py-1 rounded text-sm <%= r.status === 'checked_in' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>"><%= r.status %></span></td>
+          <td class="py-2 px-3 border-b"><%= r.paymentMethod %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,6 @@
+{
+  "watch": ["api.js", "routes", "views", "public"],
+  "ext": "js,ejs,css",
+  "ignore": ["node_modules"],
+  "delay": "500"
+}

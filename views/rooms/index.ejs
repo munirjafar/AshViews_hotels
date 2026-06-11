@@ -1,0 +1,87 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Available Rooms</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">Rooms</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row mb-3">
+      <div class="col-12 d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="mb-0">Room inventory is powered by MySQL</h5>
+          <p class="mb-0 text-muted">Create a room first, then book it from this page.</p>
+        </div>
+        <div>
+          <a href="/rooms/new" class="btn btn-primary">Create New Room</a>
+        </div>
+      </div>
+    </div>
+
+    <% if (!dbAvailable) { %>
+      <div class="alert alert-warning">
+        MySQL is not configured or unavailable. Please set database connection details and restart.
+      </div>
+    <% } %>
+
+    <% if (rooms && rooms.length > 0) { %>
+      <div class="row">
+        <% rooms.forEach(function(room) { %>
+          <div class="col-lg-4 col-md-6">
+            <div class="card card-outline card-secondary mb-4">
+              <div class="card-header bg-info">
+                <h3 class="card-title"><%= room.roomName %></h3>
+                <span class="badge badge-pill badge-light float-right">Room <%= room.roomNumber %></span>
+              </div>
+              <div class="card-body">
+                <p class="text-muted mb-2"><%= room.amenities || 'No amenities listed' %></p>
+                <div class="mb-3">
+                  <% if (room.discount && Number(room.discount) > 0) { %>
+                    <span class="badge badge-success mb-2"><%= Number(room.discount) %>% OFF</span>
+                  <% } %>
+                  <div>
+                    <span class="h4 text-success">₦<%= Number(room.price).toLocaleString('en-NG', {maximumFractionDigits: 2}) %></span>
+                    <br><small class="text-muted">per night</small>
+                  </div>
+                </div>
+                <div class="btn-group w-100">
+                  <button type="button" onclick='bookRoom(<%- JSON.stringify(room) %>)' class="btn btn-primary">Book Now</button>
+                  <a href="/rooms/<%= room.id %>/edit" class="btn btn-light">Edit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-outline card-warning">
+            <div class="card-body">
+              <h5 class="card-title">No rooms found</h5>
+              <p class="card-text">There are no rooms in the database yet. Click "Create New Room" to add the first room.</p>
+              <a href="/rooms/new" class="btn btn-primary">Create First Room</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<script>
+function bookRoom(room) {
+  sessionStorage.setItem('selectedRoom', JSON.stringify(room));
+  window.location.href = '/guests/book?roomId=' + room.id;
+}
+</script>
