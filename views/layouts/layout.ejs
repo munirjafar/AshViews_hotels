@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'ProUSB Card System' %></title>
+      <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+      integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q="
+      crossorigin="anonymous"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">   
+    <link rel="stylesheet" href="/css/index.css?v=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+</head>
+    <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
+        <div class="wrapper">
+            <%- include('../pertials/topnavbar') %>
+            <%- include('../pertials/sidebar') %>
+            <div class="content-wrapper px-4 py-2">
+                <% if (title) { %>
+                    <div class="content-header">
+                        <div class="container-fluid">
+
+                            <div class="row mb-2">
+
+                                <div class="col-sm-6">
+                                    <h1 class="m-0"><%= title %></h1>
+                                </div>
+
+                                <div class="col-sm-6">
+
+                                    <% if (breadcrumbs && breadcrumbs.length > 0) { %>
+
+                                        <ol class="breadcrumb float-sm-right">
+
+                                            <% breadcrumbs.forEach(item => { %>
+
+                                                <% if(item.active){ %>
+
+                                                    <li class="breadcrumb-item active">
+                                                        <%= item.name %>
+                                                    </li>
+
+                                                <% } else { %>
+
+                                                    <li class="breadcrumb-item">
+                                                        <a href="<%= item.url %>">
+                                                            <%= item.name %>
+                                                        </a>
+                                                    </li>
+
+                                                <% } %>
+
+                                            <% }) %>
+
+                                        </ol>
+
+                                    <% } %>
+
+                                </div>
+                        </div>
+                    </div>
+                <% } %>
+                <%- include('../pertials/flash') %>
+                    <section class="content">
+                        <div class="container-fluid">
+                            <%- body %>
+                        </div>
+                    </section>
+            </div>
+            <%- //include('../pertials/footer') %>
+        </div>
+    <%- include('../pertials/foot') %>
+    </body>
+</html>

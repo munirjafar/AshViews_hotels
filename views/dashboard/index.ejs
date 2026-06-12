@@ -1,0 +1,397 @@
+<%
+const s =  {
+    totalGuests: 0,
+    totalStaffs: 0,
+    totalRooms: 0,
+    totalCards: 0,
+    totalReservations: 0,
+    totalTransactions: 0,
+    totalCheckins: 0,
+    totalCheckouts: 0,
+    occupiedRooms: 0,
+    vacantRooms: 0,
+    maintenanceRooms: 0,
+    reservedRooms: 0,
+    availableRooms: 0
+};
+%>
+<div class="row">
+
+    <div class="col-md-4">
+
+        <div class="info-box bg-success">
+
+            <span class="info-box-icon">
+                <i class="fas fa-percentage"></i>
+            </span>
+
+            <div class="info-box-content">
+
+                <span class="info-box-text">
+                    Occupancy Rate
+                </span>
+
+                <span class="info-box-number">
+
+                    <%= s.totalRooms > 0
+                        ? Math.round((s.occupiedRooms / s.totalRooms) * 100)
+                        : 0 %>%
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="info-box bg-info">
+
+            <span class="info-box-icon">
+                <i class="fas fa-calendar-check"></i>
+            </span>
+
+            <div class="info-box-content">
+
+                <span class="info-box-text">
+                    Reservation Rate
+                </span>
+
+                <span class="info-box-number">
+
+                    <%= s.totalRooms > 0
+                        ? Math.round((s.reservedRooms / s.totalRooms) * 100)
+                        : 0 %>%
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="info-box bg-warning">
+
+            <span class="info-box-icon">
+                <i class="fas fa-tools"></i>
+            </span>
+
+            <div class="info-box-content">
+
+                <span class="info-box-text">
+                    Maintenance Rate
+                </span>
+
+                <span class="info-box-number">
+
+                    <%= s.totalRooms > 0
+                        ? Math.round((s.maintenanceRooms / s.totalRooms) * 100)
+                        : 0 %>%
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card card-outline card-success">
+
+    <div class="card-header">
+
+        <h3 class="card-title">
+
+            <i class="fas fa-chart-line mr-2"></i>
+
+            Hotel Performance Analytics
+
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <div class="description-block border-right">
+
+                    <span class="description-percentage text-success">
+
+                        <i class="fas fa-arrow-up"></i>
+
+                    </span>
+
+                    <h5 class="description-header">
+                        <%= s.totalTransactions %>
+                    </h5>
+
+                    <span class="description-text">
+                        TOTAL TRANSACTIONS
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="description-block border-right">
+
+                    <span class="description-percentage text-info">
+
+                        <i class="fas fa-hotel"></i>
+
+                    </span>
+
+                    <h5 class="description-header">
+                        <%= s.totalReservations %>
+                    </h5>
+
+                    <span class="description-text">
+                        BOOKINGS
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="description-block border-right">
+
+                    <span class="description-percentage text-primary">
+
+                        <i class="fas fa-sign-in-alt"></i>
+
+                    </span>
+
+                    <h5 class="description-header">
+                        <%= s.totalCheckins %>
+                    </h5>
+
+                    <span class="description-text">
+                        CHECK INS
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="description-block">
+
+                    <span class="description-percentage text-danger">
+
+                        <i class="fas fa-sign-out-alt"></i>
+
+                    </span>
+
+                    <h5 class="description-header">
+                        <%= s.totalCheckouts %>
+                    </h5>
+
+                    <span class="description-text">
+                        CHECK OUTS
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card card-primary card-outline">
+
+    <div class="card-header">
+
+        <h3 class="card-title">
+
+            <i class="fas fa-bed mr-2"></i>
+
+            Room Utilization
+
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="progress-group">
+
+            Occupied Rooms
+
+            <span class="float-right">
+
+                <b><%= s.occupiedRooms %></b>/<%= s.totalRooms %>
+
+            </span>
+
+            <div class="progress progress-sm">
+
+                <div class="progress-bar bg-danger"
+                     style="width:<%= s.totalRooms ? (s.occupiedRooms/s.totalRooms)*100 : 0 %>%">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="progress-group">
+
+            Reserved Rooms
+
+            <span class="float-right">
+
+                <b><%= s.reservedRooms %></b>/<%= s.totalRooms %>
+
+            </span>
+
+            <div class="progress progress-sm">
+
+                <div class="progress-bar bg-info"
+                     style="width:<%= s.totalRooms ? (s.reservedRooms/s.totalRooms)*100 : 0 %>%">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="progress-group">
+
+            Vacant Rooms
+
+            <span class="float-right">
+
+                <b><%= s.vacantRooms %></b>/<%= s.totalRooms %>
+
+            </span>
+
+            <div class="progress progress-sm">
+
+                <div class="progress-bar bg-success"
+                     style="width:<%= s.totalRooms ? (s.vacantRooms/s.totalRooms)*100 : 0 %>%">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="progress-group">
+
+            Maintenance
+
+            <span class="float-right">
+
+                <b><%= s.maintenanceRooms %></b>/<%= s.totalRooms %>
+
+            </span>
+
+            <div class="progress progress-sm">
+
+                <div class="progress-bar bg-warning"
+                     style="width:<%= s.totalRooms ? (s.maintenanceRooms/s.totalRooms)*100 : 0 %>%">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card card-outline card-info">
+
+    <div class="card-header">
+
+        <h3 class="card-title">
+
+            <i class="fas fa-bolt mr-2"></i>
+
+            Quick Actions
+
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <a href="/guests/new"
+                   class="btn btn-primary btn-block">
+
+                    <i class="fas fa-user-plus"></i>
+
+                    New Guest
+
+                </a>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <a href="/reservations/new"
+                   class="btn btn-success btn-block">
+
+                    <i class="fas fa-calendar-plus"></i>
+
+                    New Reservation
+
+                </a>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <a href="/checkin"
+                   class="btn btn-info btn-block">
+
+                    <i class="fas fa-sign-in-alt"></i>
+
+                    Check In
+
+                </a>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <a href="/checkout"
+                   class="btn btn-danger btn-block">
+
+                    <i class="fas fa-sign-out-alt"></i>
+
+                    Check Out
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

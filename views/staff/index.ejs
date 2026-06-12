@@ -1,22 +1,130 @@
-<div class="card shadow-sm">
-    <div class="card-header d-flex justify-content-between align-items-center">
+<style>
+    .staff-avatar,
+.img-circle {
+    object-fit: cover;
+}
+
+.card-header .card-title {
+    font-weight: 600;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+</style>
+<div class="card card-primary card-outline">
+
+    <!-- HEADER -->
+    <div class="card-header">
+
         <h3 class="card-title">
-            <ion-icon name="people-outline"></ion-icon>
+
+            <i class="fas fa-users mr-2"></i>
+
             Staff Management
+
         </h3>
 
-        <a href="/staff/new" class="btn btn-primary">
-            <ion-icon name="add-outline"></ion-icon>
-            Add Staff
-        </a>
+        <div class="card-tools">
+
+            <a href="/staff/new"
+               class="btn btn-primary btn-sm">
+
+                <i class="fas fa-user-plus mr-1"></i>
+
+                Add Staff
+
+            </a>
+
+        </div>
+
     </div>
-s
+
+    <!-- TOOLBAR -->
+    <div class="card-body border-bottom">
+
+        <div class="row">
+
+            <div class="col-md-4 mb-2">
+
+                <div class="input-group">
+
+                    <input type="text"
+                           id="staffSearch"
+                           class="form-control"
+                           placeholder="Search staff...">
+
+                    <div class="input-group-append">
+
+                        <span class="input-group-text">
+
+                            <i class="fas fa-search"></i>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3 mb-2">
+
+                <select id="roleFilter"
+                        class="form-control">
+
+                    <option value="">All Roles</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Receptionist">Receptionist</option>
+                    <option value="Housekeeping">Housekeeping</option>
+                    <option value="Security">Security</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-3 mb-2">
+
+                <select id="statusFilter"
+                        class="form-control">
+
+                    <option value="">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-2 text-right">
+
+                <span class="badge badge-primary p-2">
+
+                    Records:
+
+                    <span id="recordCount">
+                        1
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
     <div class="card-body table-responsive p-0">
 
-        <table class="table table-hover text-nowrap">
+        <table class="table table-hover text-nowrap"
+               id="staffTable">
 
             <thead>
+
                 <tr>
+
                     <th>Photo</th>
                     <th>Staff ID</th>
                     <th>Full Name</th>
@@ -24,69 +132,427 @@ s
                     <th>Role</th>
                     <th>Status</th>
                     <th>Verified</th>
-                    <th width="120">Actions</th>
+                    <th width="150">Actions</th>
+
                 </tr>
+
             </thead>
 
             <tbody>
 
-                <tr>
+                <% if(staffs && staffs.length){ %>
 
-                    <td>
-                        <img src="/uploads/staff/default.png"
-                             class="staff-avatar">
-                    </td>
+                    <% staffs.forEach(function(staff){ %>
 
-                    <td>STF001</td>
+                    <tr class="staff-row">
 
-                    <td>
-                        <strong>John Doe</strong>
-                    </td>
+                        <td>
 
-                    <td>+2348012345678</td>
+                            <img
+                                src="<%= staff.photo || '/uploads/staff/default.png' %>"
+                                class="img-circle elevation-2"
+                                width="40"
+                                height="40">
 
-                    <td>
-                        <span class="badge badge-info">
-                            Manager
-                        </span>
-                    </td>
+                        </td>
 
-                    <td>
-                        <span class="badge badge-success">
-                            Active
-                        </span>
-                    </td>
+                        <td>
+                            <%= staff.staff_id %>
+                        </td>
 
-                    <td>
-                        <span class="badge badge-success">
-                            Verified
-                        </span>
-                    </td>
+                        <td>
 
-                    <td>
+                            <strong>
+                                <%= staff.fullname %>
+                            </strong>
 
-                        <a href="/staffs/view/1"
-                           class="btn btn-sm btn-primary"
-                           title="View Staff">
+                        </td>
 
-                            <ion-icon name="eye-outline"></ion-icon>
+                        <td>
+                            <%= staff.mobile %>
+                        </td>
 
-                        </a>
+                        <td class="role">
 
-                        <a href="/staffs/edit/1"
-                           class="btn btn-sm btn-warning">
+                            <span class="badge badge-info">
 
-                            <ion-icon name="create-outline"></ion-icon>
+                                <%= staff.role %>
 
-                        </a>
+                            </span>
 
-                    </td>
+                        </td>
 
-                </tr>
+                        <td class="status">
+
+                            <% if(staff.status === 'Active'){ %>
+
+                                <span class="badge badge-success">
+
+                                    Active
+
+                                </span>
+
+                            <% } else { %>
+
+                                <span class="badge badge-danger">
+
+                                    Inactive
+
+                                </span>
+
+                            <% } %>
+
+                        </td>
+
+                        <td>
+
+                            <% if(staff.verified){ %>
+
+                                <span class="badge badge-success">
+
+                                    Verified
+
+                                </span>
+
+                            <% } else { %>
+
+                                <span class="badge badge-warning">
+
+                                    Pending
+
+                                </span>
+
+                            <% } %>
+
+                        </td>
+
+                        <td>
+
+                            <div class="btn-group">
+
+                                <a href="/staff/view/<%= staff.id %>"
+                                   class="btn btn-info btn-sm">
+
+                                    <i class="fas fa-eye"></i>
+
+                                </a>
+
+                                <a href="/staff/edit/<%= staff.id %>"
+                                   class="btn btn-warning btn-sm">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </a>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    <% }) %>
+
+                <% } else { %>
+
+                    <tr>
+
+                        <td colspan="8">
+
+                            <div class="text-center py-5">
+
+                                <i class="fas fa-users fa-4x text-muted mb-3"></i>
+
+                                <h4>No Staff Found</h4>
+
+                                <p class="text-muted">
+
+                                    No staff has been registered yet.
+
+                                </p>
+
+                                <a href="/staff/new"
+                                   class="btn btn-primary">
+
+                                    <i class="fas fa-user-plus"></i>
+
+                                    Register Staff
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                <% } %>
 
             </tbody>
 
         </table>
 
     </div>
+
+    <!-- NO SEARCH RESULTS -->
+    <div id="noResults"
+         class="card-body text-center"
+         style="display:none;">
+
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+
+        <h5>No Matching Staff Found</h5>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer clearfix">
+
+        <div class="float-left">
+
+            Page
+
+            <span id="currentPage">1</span>
+
+            of
+
+            <span id="totalPages">1</span>
+
+        </div>
+
+        <div class="float-right">
+
+            <button
+                id="prevBtn"
+                class="btn btn-default btn-sm">
+
+                Previous
+
+            </button>
+
+            <button
+                id="nextBtn"
+                class="btn btn-default btn-sm">
+
+                Next
+
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function(){
+
+    const searchInput =
+        document.getElementById('staffSearch');
+
+    const roleFilter =
+        document.getElementById('roleFilter');
+
+    const statusFilter =
+        document.getElementById('statusFilter');
+
+    const pageSizeSelect =
+        document.getElementById('pageSize');
+
+    const rows =
+        [...document.querySelectorAll('.staff-row')];
+
+    const recordCount =
+        document.getElementById('recordCount');
+
+    const currentPageSpan =
+        document.getElementById('currentPage');
+
+    const totalPagesSpan =
+        document.getElementById('totalPages');
+
+    const prevBtn =
+        document.getElementById('prevBtn');
+
+    const nextBtn =
+        document.getElementById('nextBtn');
+
+    const noResults =
+        document.getElementById('noResults');
+
+    let currentPage = 1;
+
+    let pageSize = 10;
+
+    function getFilteredRows(){
+
+        const search =
+            searchInput.value.toLowerCase();
+
+        const role =
+            roleFilter.value.toLowerCase();
+
+        const status =
+            statusFilter.value.toLowerCase();
+
+        return rows.filter(function(row){
+
+            const text =
+                row.innerText.toLowerCase();
+
+            const rowRole =
+                row.querySelector('.role')
+                ?.innerText
+                .toLowerCase() || '';
+
+            const rowStatus =
+                row.querySelector('.status')
+                ?.innerText
+                .toLowerCase() || '';
+
+            return (
+                text.includes(search) &&
+                (!role || rowRole === role) &&
+                (!status || rowStatus === status)
+            );
+
+        });
+
+    }
+
+    function renderTable(){
+
+        const filteredRows =
+            getFilteredRows();
+
+        rows.forEach(function(row){
+            row.style.display = 'none';
+        });
+
+        if(filteredRows.length === 0){
+
+            noResults.style.display = 'block';
+
+        }else{
+
+            noResults.style.display = 'none';
+
+        }
+
+        const totalPages =
+            Math.ceil(filteredRows.length / pageSize) || 1;
+
+        if(currentPage > totalPages){
+
+            currentPage = totalPages;
+
+        }
+
+        const start =
+            (currentPage - 1) * pageSize;
+
+        const end =
+            start + pageSize;
+
+        filteredRows
+            .slice(start, end)
+            .forEach(function(row){
+
+                row.style.display = '';
+
+            });
+
+        recordCount.textContent =
+            filteredRows.length;
+
+        currentPageSpan.textContent =
+            currentPage;
+
+        totalPagesSpan.textContent =
+            totalPages;
+
+        prevBtn.disabled =
+            currentPage === 1;
+
+        nextBtn.disabled =
+            currentPage === totalPages;
+
+    }
+
+    searchInput.addEventListener('input', function(){
+
+        currentPage = 1;
+
+        renderTable();
+
+    });
+
+    roleFilter.addEventListener('change', function(){
+
+        currentPage = 1;
+
+        renderTable();
+
+    });
+
+    statusFilter.addEventListener('change', function(){
+
+        currentPage = 1;
+
+        renderTable();
+
+    });
+
+    pageSizeSelect.addEventListener('change', function(){
+
+        pageSize =
+            parseInt(this.value);
+
+        currentPage = 1;
+
+        renderTable();
+
+    });
+
+    prevBtn.addEventListener('click', function(){
+
+        if(currentPage > 1){
+
+            currentPage--;
+
+            renderTable();
+
+        }
+
+    });
+
+    nextBtn.addEventListener('click', function(){
+
+        const totalPages =
+            Math.ceil(
+                getFilteredRows().length / pageSize
+            );
+
+        if(currentPage < totalPages){
+
+            currentPage++;
+
+            renderTable();
+
+        }
+
+    });
+
+    renderTable();
+
+});
+
+</script>

@@ -32,8 +32,81 @@ router.get('/', async (req, res) => {
 });
 
 // Create room form
-router.get('/new', (req, res) => {
-    res.render('rooms/form', { title: 'New Room', room: null, errors: null });
+router.post('/', async (req, res) => {
+
+    try {
+
+        const {
+            roomNumber,
+            roomName,
+            price,
+            discount,
+            amenities
+        } = req.body;
+
+        const errors = {};
+
+        if (!roomNumber)
+            errors.roomNumber = 'Room number is required';
+
+        if (!roomName)
+            errors.roomName = 'Room name is required';
+
+        if (!price || Number(price) <= 0)
+            errors.price = 'Valid price is required';
+
+        if (Object.keys(errors).length > 0) {
+
+            return res.render('rooms/form', {
+                title: 'New Room',
+                room: req.body,
+                errors
+            });
+
+        }
+
+        await mysql.query(
+            `INSERT INTO rooms
+            (
+                roomNumber,
+                roomName,
+                price,
+                discount,
+                amenities,
+                status,
+                createdAt
+            )
+            VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+            [
+                roomNumber,
+                roomName,
+                price,
+                discount || 0,
+                amenities || '',
+                'available'
+            ]
+        );
+
+        req.flash(
+            'success',
+            'Room created successfully'
+        );
+
+        res.redirect('/rooms');
+
+    } catch (err) {
+
+        console.error(err);
+
+        req.flash(
+            'error',
+            'Failed to create room'
+        );
+
+        res.redirect('/rooms/new');
+
+    }
+
 });
 
 // Edit room form

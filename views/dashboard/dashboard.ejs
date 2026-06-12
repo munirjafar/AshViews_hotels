@@ -1,78 +1,324 @@
-    <title>ProUSB Card Management System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 10px;
-        }
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .card-button {
-            display: block;
-            padding: 20px;
-            background: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            text-align: center;
-            transition: background 0.3s;
-        }
-        .card-button:hover {
-            background: #0056b3;
-        }
-        .card-button h3 {
-            margin: 0 0 10px 0;
-        }
-        .card-button p {
-            margin: 0;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-    </style>
-    <div class="container">
-        <h1>ProUSB Card Management System</h1>
-        <div class="card-grid">
-            <a href="/read-card" class="card-button">
-                <h3>📖 Read Card</h3>
-                <p>Read data from a card</p>
-            </a>
-            <a href="/write-card" class="card-button">
-                <h3>✍️ Write Guest Card</h3>
-                <p>Issue a standard guest card</p>
-            </a>
-            <a href="/master-card" class="card-button">
-                <h3>👑 Issue Master Card</h3>
-                <p>Create time-limited master card</p>
-            </a>
-        </div>
-        <div style="margin-top: 30px; padding: 15px; background: #e9ecef; border-radius: 5px;">
-            <h3>System Status</h3>
-            <p><strong>SDK Version:</strong> <span id="version">Checking...</span></p>
-            <button onclick="checkVersion()" style="padding: 5px 10px;">Refresh</button>
-        </div>
+<%
+const s =  {
+    totalGuests: 0,
+    totalStaffs: 0,
+    totalRooms: 0,
+    totalCards: 0,
+    totalReservations: 0,
+    totalTransactions: 0,
+    totalCheckins: 0,
+    totalCheckouts: 0,
+    occupiedRooms: 0,
+    vacantRooms: 0,
+    maintenanceRooms: 0,
+    reservedRooms: 0,
+    availableRooms: 0
+};
+%>
+<div class="card">
+
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-chart-pie mr-2"></i>
+            System Overview
+        </h3>
     </div>
-    <script>
-        async function checkVersion() {
-            const version = await window.api.checkVersion();
-            document.getElementById('version').textContent = version;
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3><%= s.totalGuests %></h3>
+                        <p>Total Guests</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <a href="/guests" class="small-box-footer">
+                        Manage Guests
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3><%= s.totalStaffs %></h3>
+                        <p>Total Staffs</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <a href="/staff" class="small-box-footer">
+                        Manage Staff
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3><%= s.totalRooms %></h3>
+                        <p>Total Rooms</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <a href="/rooms" class="small-box-footer">
+                        Manage Rooms
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3><%= s.totalCards %></h3>
+                        <p>Total Cards</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <a href="/card-logs" class="small-box-footer">
+                        Card Logs
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3><%= s.totalReservations %></h3>
+                        <p>Reservations</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <a href="/reservations" class="small-box-footer">
+                        View Reservations
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-secondary">
+                    <div class="inner">
+                        <h3><%= s.totalTransactions %></h3>
+                        <p>Transactions</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <a href="/transactions" class="small-box-footer">
+                        View Transactions
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3><%= s.totalCheckins %></h3>
+                        <p>Check-ins</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <a href="/checkin" class="small-box-footer">
+                        View Check-ins
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3><%= s.totalCheckouts %></h3>
+                        <p>Check-outs</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <a href="/checkout" class="small-box-footer">
+                        View Check-outs
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card card-primary card-outline">
+
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-hotel mr-2"></i>
+            Room Status Overview
+        </h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-lg-2 col-md-4 col-sm-6">
+
+                <div class="info-box">
+
+                    <span class="info-box-icon bg-success">
+                        <i class="fas fa-door-open"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Vacant</span>
+                        <span class="info-box-number">
+                            <%= s.vacantRooms %>
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-sm-6">
+
+                <div class="info-box">
+
+                    <span class="info-box-icon bg-danger">
+                        <i class="fas fa-bed"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Occupied</span>
+                        <span class="info-box-number">
+                            <%= s.occupiedRooms %>
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-sm-6">
+
+                <div class="info-box">
+
+                    <span class="info-box-icon bg-warning">
+                        <i class="fas fa-tools"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Maintenance</span>
+                        <span class="info-box-number">
+                            <%= s.maintenanceRooms %>
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-sm-6">
+
+                <div class="info-box">
+
+                    <span class="info-box-icon bg-info">
+                        <i class="fas fa-calendar-alt"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Reserved</span>
+                        <span class="info-box-number">
+                            <%= s.reservedRooms %>
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-sm-6">
+
+                <div class="info-box">
+
+                    <span class="info-box-icon bg-primary">
+                        <i class="fas fa-check-circle"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Available</span>
+                        <span class="info-box-number">
+                            <%= s.availableRooms %>
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+async function checkVersion(){
+
+    const versionElement =
+        document.getElementById('version');
+
+    try{
+
+        if(
+            window.api &&
+            typeof window.api.checkVersion === 'function'
+        ){
+
+            const version =
+                await window.api.checkVersion();
+
+            versionElement.textContent =
+                version || 'Unknown';
+
+        }else{
+
+            versionElement.textContent =
+                'SDK Not Connected';
+
         }
-        checkVersion();
-    </script>
+
+    }catch(error){
+
+        versionElement.textContent =
+            'Unavailable';
+
+    }
+
+}
+
+document.addEventListener(
+    'DOMContentLoaded',
+    checkVersion
+);
+
+</script>

@@ -1,23 +1,519 @@
-<h1 class="text-2xl font-bold mb-4 flex items-center gap-2">
-  <ion-icon name="document-text-outline"></ion-icon> Card Logs
-</h1>
-<div class="overflow-x-auto">
-  <table class="min-w-full bg-white border">
-    <thead>
-      <tr><th>Time</th><th>Room</th><th>Card Type</th><th>Card ID</th><th>Start Date</th><th>End Date</th><th>Success</th><th>Error</th></tr>
-    </thead>
-    <tbody>
-      <% logs.forEach(log => { %>
-        <tr><td class="py-2 px-3 border-b"><%= new Date(log.writtenAt).toLocaleString() %></td>
-          <td class="py-2 px-3 border-b"><%= log.roomNumber || '-' %></td>
-          <td class="py-2 px-3 border-b"><%= log.cardType %></td>
-          <td class="py-2 px-3 border-b"><%= log.cardId || '-' %></td>
-          <td class="py-2 px-3 border-b"><%= log.startDate || '-' %></td>
-          <td class="py-2 px-3 border-b"><%= log.endDate || '-' %></td>
-          <td class="py-2 px-3 border-b"><%= log.success ? '✅' : '❌' %></td>
-          <td class="py-2 px-3 border-b text-red-600"><%= log.errorMessage || '-' %></td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
+<div class="card card-primary card-outline">
+
+    <!-- HEADER -->
+    <div class="card-header">
+
+        <h3 class="card-title">
+
+            <i class="fas fa-lock mr-2"></i>
+
+            Room Lock Management
+
+        </h3>
+
+    </div>
+
+    <!-- ADD LOCK -->
+    <div class="card-body border-bottom">
+
+        <form
+            method="POST"
+            action="/room-locks">
+
+            <div class="row">
+
+                <div class="col-md-3 mb-2">
+
+                    <select
+                        name="roomId"
+                        required
+                        class="form-control">
+
+                        <option value="">
+                            Select Room
+                        </option>
+
+                        <% rooms.forEach(function(room){ %>
+
+                            <option value="<%= room.id %>">
+
+                                <%= room.roomNumber %> -
+                                <%= room.roomName %>
+
+                            </option>
+
+                        <% }); %>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-3 mb-2">
+
+                    <input
+                        type="text"
+                        name="lockSerial"
+                        class="form-control"
+                        placeholder="Serial Number">
+
+                </div>
+
+                <div class="col-md-2 mb-2">
+
+                    <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        name="batteryLevel"
+                        class="form-control"
+                        placeholder="Battery %">
+
+                </div>
+
+                <div class="col-md-2 mb-2">
+
+                    <input
+                        type="text"
+                        name="firmwareVersion"
+                        class="form-control"
+                        placeholder="Firmware">
+
+                </div>
+
+                <div class="col-md-2 mb-2">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-block">
+
+                        <i class="fas fa-save"></i>
+
+                        Save
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- FILTERS -->
+    <div class="card-body border-bottom">
+
+        <div class="row">
+
+            <div class="col-md-4 mb-2">
+
+                <div class="input-group">
+
+                    <input
+                        type="text"
+                        id="lockSearch"
+                        class="form-control"
+                        placeholder="Search room lock...">
+
+                    <div class="input-group-append">
+
+                        <span class="input-group-text">
+
+                            <i class="fas fa-search"></i>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3 mb-2">
+
+                <select
+                    id="batteryFilter"
+                    class="form-control">
+
+                    <option value="">
+                        All Battery Levels
+                    </option>
+
+                    <option value="high">
+                        High (70%+)
+                    </option>
+
+                    <option value="medium">
+                        Medium (30%-69%)
+                    </option>
+
+                    <option value="low">
+                        Low (Below 30%)
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-2 text-right">
+
+                <span class="badge badge-primary p-2">
+
+                    Records:
+
+                    <span id="recordCount">
+                        <%= locks ? locks.length : 0 %>
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="card-body table-responsive p-0">
+
+        <table
+            id="lockTable"
+            class="table table-hover text-nowrap">
+
+            <thead>
+
+                <tr>
+
+                    <th>Room</th>
+                    <th>Serial</th>
+                    <th>Battery</th>
+                    <th>Firmware</th>
+                    <th>Last Sync</th>
+                    <th width="100">Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <% if(locks && locks.length > 0){ %>
+
+                    <% locks.forEach(function(lock){ %>
+
+                    <tr class="lock-row">
+
+                        <td>
+
+                            <strong>
+                                <%= lock.roomNumber %>
+                            </strong>
+
+                            <br>
+
+                            <small class="text-muted">
+                                <%= lock.roomName %>
+                            </small>
+
+                        </td>
+
+                        <td>
+                            <%= lock.lockSerial || '-' %>
+                        </td>
+
+                        <td class="battery">
+
+                            <% if(lock.batteryLevel >= 70){ %>
+
+                                <span class="badge badge-success">
+
+                                    <%= lock.batteryLevel %>%
+
+                                </span>
+
+                            <% } else if(lock.batteryLevel >= 30){ %>
+
+                                <span class="badge badge-warning">
+
+                                    <%= lock.batteryLevel %>%
+
+                                </span>
+
+                            <% } else { %>
+
+                                <span class="badge badge-danger">
+
+                                    <%= lock.batteryLevel || 0 %>%
+
+                                </span>
+
+                            <% } %>
+
+                        </td>
+
+                        <td>
+                            <%= lock.firmwareVersion || '-' %>
+                        </td>
+
+                        <td>
+
+                            <%= lock.lastSync
+                                ? new Date(lock.lastSync).toLocaleString()
+                                : '-' %>
+
+                        </td>
+
+                        <td>
+
+                            <form
+                                method="POST"
+                                action="/room-locks/<%= lock.roomId %>/delete"
+                                onsubmit="return confirm('Delete lock record?')">
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger btn-sm">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    <% }); %>
+
+                <% } else { %>
+
+                    <tr>
+
+                        <td colspan="6">
+
+                            <div class="text-center py-5">
+
+                                <i class="fas fa-lock fa-4x text-muted mb-3"></i>
+
+                                <h5>No Room Locks Found</h5>
+
+                                <p class="text-muted">
+
+                                    No lock information has been added yet.
+
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                <% } %>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- SEARCH EMPTY -->
+    <div
+        id="noResults"
+        class="card-body text-center"
+        style="display:none;">
+
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+
+        <h5>No Matching Lock Found</h5>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer clearfix">
+
+        <div class="float-left">
+
+            Page
+
+            <span id="currentPage">1</span>
+
+            of
+
+            <span id="totalPages">1</span>
+
+        </div>
+
+        <div class="float-right">
+
+            <button
+                id="prevBtn"
+                class="btn btn-default btn-sm">
+
+                Previous
+
+            </button>
+
+            <button
+                id="nextBtn"
+                class="btn btn-default btn-sm">
+
+                Next
+
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function(){
+
+    const rows =
+        [...document.querySelectorAll('.lock-row')];
+
+    const searchInput =
+        document.getElementById('lockSearch');
+
+    const batteryFilter =
+        document.getElementById('batteryFilter');
+
+    const recordCount =
+        document.getElementById('recordCount');
+
+    const noResults =
+        document.getElementById('noResults');
+
+    const currentPageSpan =
+        document.getElementById('currentPage');
+
+    const totalPagesSpan =
+        document.getElementById('totalPages');
+
+    const prevBtn =
+        document.getElementById('prevBtn');
+
+    const nextBtn =
+        document.getElementById('nextBtn');
+
+    let currentPage = 1;
+
+    const pageSize = 10;
+
+    function getFilteredRows(){
+
+        const search =
+            searchInput.value.toLowerCase();
+
+        const battery =
+            batteryFilter.value;
+
+        return rows.filter(function(row){
+
+            const text =
+                row.innerText.toLowerCase();
+
+            const batteryText =
+                row.querySelector('.battery')
+                .innerText
+                .replace('%','');
+
+            const batteryLevel =
+                parseInt(batteryText) || 0;
+
+            let batteryMatch = true;
+
+            if(battery === 'high')
+                batteryMatch = batteryLevel >= 70;
+
+            if(battery === 'medium')
+                batteryMatch = batteryLevel >= 30 && batteryLevel < 70;
+
+            if(battery === 'low')
+                batteryMatch = batteryLevel < 30;
+
+            return text.includes(search) && batteryMatch;
+
+        });
+
+    }
+
+    function renderTable(){
+
+        const filtered =
+            getFilteredRows();
+
+        rows.forEach(row => row.style.display='none');
+
+        if(filtered.length === 0){
+
+            noResults.style.display='block';
+
+        }else{
+
+            noResults.style.display='none';
+
+        }
+
+        const totalPages =
+            Math.ceil(filtered.length/pageSize) || 1;
+
+        const start =
+            (currentPage-1)*pageSize;
+
+        filtered
+            .slice(start,start+pageSize)
+            .forEach(row => row.style.display='');
+
+        recordCount.textContent =
+            filtered.length;
+
+        currentPageSpan.textContent =
+            currentPage;
+
+        totalPagesSpan.textContent =
+            totalPages;
+
+    }
+
+    searchInput.addEventListener('input', renderTable);
+    batteryFilter.addEventListener('change', renderTable);
+
+    prevBtn.addEventListener('click', function(){
+
+        if(currentPage > 1){
+
+            currentPage--;
+
+            renderTable();
+
+        }
+
+    });
+
+    nextBtn.addEventListener('click', function(){
+
+        const totalPages =
+            Math.ceil(
+                getFilteredRows().length / pageSize
+            );
+
+        if(currentPage < totalPages){
+
+            currentPage++;
+
+            renderTable();
+
+        }
+
+    });
+
+    renderTable();
+
+});
+
+</script>

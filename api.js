@@ -37,13 +37,67 @@ app.use(session({
 app.use(flash());
 
 // expose flash messages and DB availability to all views
+// app.use((req, res, next) => {
+//     res.locals.flash = {
+//         success: req.flash('success'),
+//         error: req.flash('error')
+//     };
+//     res.locals.dbAvailable = mysql.isDbAvailable();
+//     next();
+// });
+
 app.use((req, res, next) => {
+
+    // Flash Messages
     res.locals.flash = {
         success: req.flash('success'),
         error: req.flash('error')
     };
+
+    // Database Status
     res.locals.dbAvailable = mysql.isDbAvailable();
+
+    // Default Title
+    res.locals.title = res.locals.title || 'Dashboard';
+
+    // Auto Breadcrumbs
+    const breadcrumbs = [
+        {
+            name: 'Dashboard',
+            url: '/',
+            active: false
+        }
+    ];
+
+    const segments = req.path
+        .split('/')
+        .filter(Boolean)
+        .filter(segment => !/^\d+$/.test(segment)); // remove IDs
+
+    let currentUrl = '';
+
+    segments.forEach((segment, index) => {
+
+        currentUrl += '/' + segment;
+
+        breadcrumbs.push({
+            name: segment
+                .replace(/-/g, ' ')
+                .replace(/\b\w/g, m => m.toUpperCase()),
+            url: currentUrl,
+            active: index === segments.length - 1
+        });
+
+    });
+
+    if (segments.length === 0) {
+        breadcrumbs[0].active = true;
+    }
+
+    res.locals.breadcrumbs = breadcrumbs;
+
     next();
+
 });
 
 // ========================
@@ -53,7 +107,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(expressLayouts);
-app.set('layout', 'layout');
+app.set('layout', 'layouts/layout');
 
 // ========================
 // STATIC FILES
@@ -98,10 +152,6 @@ app.use('/transactions', transactionsRoutes);
 app.use('/profile', profileRoutes);
 app.use('/logout', logoutRoutes);
 
-// Legacy redirect for /guest to /guests
-// app.get('/guest', (req, res) => {
-//     res.redirect('/guests');
-// });
 
 // ========================
 // 404 HANDLER (MUST BE LAST ROUTE)

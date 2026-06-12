@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
     res.render('staff/index', {
         title: 'Staff',
-        staff: []
+        staffs: []
     });
 });
 

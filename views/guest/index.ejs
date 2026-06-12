@@ -1,29 +1,374 @@
-<h1 class="text-2xl font-bold mb-4 flex items-center gap-2">
-  <ion-icon name="people-outline"></ion-icon> Guest List
-</h1>
-<div class="mb-4">
-  <a href="/guests/new" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">+ New Guest</a>
+<div class="card card-outline card-primary">
+
+  <div class="card-header">
+
+    <h3 class="card-title">
+      <i class="fas fa-users mr-1"></i>
+      Guest Management
+    </h3>
+
+    <div class="card-tools">
+
+      <a href="/guests/new" class="btn btn-success btn-sm">
+        <i class="fas fa-plus"></i>
+        New Guest
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="card-body">
+
+    <% if (!guests || guests.length===0) { %>
+
+      <div class="text-center py-5">
+
+        <i class="fas fa-users fa-4x text-muted mb-3"></i>
+
+        <h4>No Guest Found</h4>
+
+        <p class="text-muted">
+          No guest has been registered yet.
+        </p>
+
+        <a href="/guests/new" class="btn btn-primary">
+          <i class="fas fa-user-plus"></i>
+          Register Guest
+        </a>
+
+      </div>
+
+      <% } else { %>
+
+        <div class="row mb-3">
+
+          <div class="col-md-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search guest...">
+          </div>
+
+          <div class="col-md-3">
+            <select id="genderFilter" class="form-control">
+              <option value="">All Genders</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <select id="pageSize" class="form-control">
+              <option value="5">5 Rows</option>
+              <option value="10" selected>10 Rows</option>
+              <option value="25">25 Rows</option>
+              <option value="50">50 Rows</option>
+            </select>
+          </div>
+
+          <div class="col-md-3 text-right">
+
+            <span class="badge badge-primary p-2">
+              Records:
+              <span id="recordCount">
+                <%= guests.length %>
+              </span>
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="table-responsive">
+
+          <table id="guestTable" class="table table-bordered table-hover">
+
+            <thead class="thead-light">
+
+              <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Gender</th>
+                <th width="150">Action</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <% guests.forEach(g=> { %>
+
+                <tr class="guest-row">
+
+                  <td>
+                    <%= g.id %>
+                  </td>
+
+                  <td>
+                    <%= g.fullname %>
+                  </td>
+
+                  <td>
+                    <%= g.email %>
+                  </td>
+
+                  <td>
+                    <%= g.mobile %>
+                  </td>
+
+                  <td class="gender">
+
+                    <% if(g.gender==='Male' ){ %>
+
+                      <span class="badge badge-primary">
+                        Male
+                      </span>
+
+                      <% } else if(g.gender==='Female' ){ %>
+
+                        <span class="badge badge-pink">
+                          Female
+                        </span>
+
+                        <% } else { %>
+
+                          <span class="badge badge-secondary">
+                            N/A
+                          </span>
+
+                          <% } %>
+
+                  </td>
+
+                  <td>
+
+                    <a href="/guests/<%= g.id %>/edit" class="btn btn-info btn-sm">
+
+                      <i class="fas fa-edit"></i>
+
+                    </a>
+
+                    <form method="POST" action="/guests/<%= g.id %>/delete" class="d-inline"
+                      onsubmit="return confirm('Delete Guest?')">
+
+                      <button type="submit" class="btn btn-danger btn-sm">
+
+                        <i class="fas fa-trash"></i>
+
+                      </button>
+
+                    </form>
+
+                  </td>
+
+                </tr>
+
+                <% }) %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div id="noResults" class="text-center py-5" style="display:none;">
+
+          <i class="fas fa-search fa-3x text-muted mb-3"></i>
+
+          <h5>No Matching Guests Found</h5>
+
+        </div>
+
+        <% } %>
+
+  </div>
+
+  <div class="card-footer clearfix">
+
+    <div class="float-left">
+
+      Page
+      <span id="currentPage">1</span>
+      of
+      <span id="totalPages">1</span>
+
+    </div>
+
+    <div class="float-right">
+
+      <button id="prevBtn" class="btn btn-default btn-sm">
+
+        Previous
+
+      </button>
+
+      <button id="nextBtn" class="btn btn-default btn-sm">
+
+        Next
+
+      </button>
+
+    </div>
+
+  </div>
+
 </div>
-<div class="overflow-x-auto">
-  <table class="min-w-full bg-white border">
-    <thead>
-      <tr><th class="py-2 px-3 border-b">ID</th><th class="py-2 px-3 border-b">Full Name</th><th class="py-2 px-3 border-b">Email</th><th class="py-2 px-3 border-b">Mobile</th><th class="py-2 px-3 border-b">Gender</th><th class="py-2 px-3 border-b">Actions</th></tr>
-    </thead>
-    <tbody>
-      <% guests.forEach(g => { %>
-        <tr><td class="py-2 px-3 border-b"><%= g.id %></td>
-          <td class="py-2 px-3 border-b"><%= g.fullname %></td>
-          <td class="py-2 px-3 border-b"><%= g.email %></td>
-          <td class="py-2 px-3 border-b"><%= g.mobile %></td>
-          <td class="py-2 px-3 border-b"><%= g.gender || '-' %></td>
-          <td class="py-2 px-3 border-b">
-            <a href="/guests/<%= g.id %>/edit" class="text-blue-600 mr-2">Edit</a>
-            <form method="POST" action="/guests/<%= g.id %>/delete" style="display:inline;" onsubmit="return confirm('Delete guest?')">
-              <button type="submit" class="text-red-600">Delete</button>
-            </form>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-</div>
+<script>
+
+  document.addEventListener('DOMContentLoaded', () => {
+
+    const searchInput = document.getElementById('searchInput');
+    const genderFilter = document.getElementById('genderFilter');
+    const pageSizeSelect = document.getElementById('pageSize');
+
+    const rows = [...document.querySelectorAll('.guest-row')];
+
+    const recordCount = document.getElementById('recordCount');
+
+    const currentPageSpan = document.getElementById('currentPage');
+    const totalPagesSpan = document.getElementById('totalPages');
+
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    const noResults = document.getElementById('noResults');
+
+    if (filteredRows.length === 0) {
+
+      noResults.classList.remove('hidden');
+      document.getElementById('guestTable')?.classList.add('hidden');
+
+    } else {
+
+      noResults.classList.add('hidden');
+      document.getElementById('guestTable')?.classList.remove('hidden');
+
+    }
+
+    let currentPage = 1;
+    let pageSize = parseInt(pageSizeSelect.value);
+
+    function getFilteredRows() {
+
+      const search = searchInput.value.toLowerCase();
+      const gender = genderFilter.value.toLowerCase();
+
+      return rows.filter(row => {
+
+        const text = row.innerText.toLowerCase();
+
+        const rowGender =
+          row.querySelector('.gender')
+            .innerText
+            .toLowerCase();
+
+        const searchMatch =
+          text.includes(search);
+
+        const genderMatch =
+          !gender ||
+          rowGender === gender;
+
+        return searchMatch && genderMatch;
+      });
+    }
+
+    function renderTable() {
+
+      const filteredRows = getFilteredRows();
+
+      rows.forEach(row => row.style.display = 'none');
+
+      const totalPages =
+        Math.ceil(filteredRows.length / pageSize) || 1;
+
+      if (currentPage > totalPages) {
+        currentPage = totalPages;
+      }
+
+      const start =
+        (currentPage - 1) * pageSize;
+
+      const end =
+        start + pageSize;
+
+      filteredRows
+        .slice(start, end)
+        .forEach(row => {
+          row.style.display = '';
+        });
+
+      recordCount.textContent =
+        filteredRows.length;
+
+      currentPageSpan.textContent =
+        currentPage;
+
+      totalPagesSpan.textContent =
+        totalPages;
+
+      prevBtn.disabled =
+        currentPage === 1;
+
+      nextBtn.disabled =
+        currentPage === totalPages;
+
+      prevBtn.classList.toggle(
+        'opacity-50',
+        currentPage === 1
+      );
+
+      nextBtn.classList.toggle(
+        'opacity-50',
+        currentPage === totalPages
+      );
+    }
+
+    searchInput.addEventListener('input', () => {
+      currentPage = 1;
+      renderTable();
+    });
+
+    genderFilter.addEventListener('change', () => {
+      currentPage = 1;
+      renderTable();
+    });
+
+    pageSizeSelect.addEventListener('change', () => {
+
+      pageSize =
+        parseInt(pageSizeSelect.value);
+
+      currentPage = 1;
+
+      renderTable();
+    });
+
+    prevBtn.addEventListener('click', () => {
+
+      if (currentPage > 1) {
+        currentPage--;
+        renderTable();
+      }
+
+    });
+
+    nextBtn.addEventListener('click', () => {
+
+      const totalPages =
+        Math.ceil(getFilteredRows().length / pageSize);
+
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderTable();
+      }
+
+    });
+
+    renderTable();
+
+  });
+
+
+
+</script>

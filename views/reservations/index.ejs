@@ -1,24 +1,537 @@
-<h1 class="text-2xl font-bold mb-4 flex items-center gap-2">
-  <ion-icon name="calendar-outline"></ion-icon> All Reservations
-</h1>
-<div class="overflow-x-auto">
-  <table class="min-w-full bg-white border">
-    <thead>
-      <tr><th>ID</th><th>Room</th><th>Guest</th><th>Check-in</th><th>Check-out</th><th>Days</th><th>Total</th><th>Status</th><th>Payment</th></tr>
-    </thead>
-    <tbody>
-      <% reservations.forEach(r => { %>
-        <tr><td class="py-2 px-3 border-b"><%= r.id %></td>
-          <td class="py-2 px-3 border-b"><%= r.roomNumber %> (<%= r.roomName %>)</td>
-          <td class="py-2 px-3 border-b"><%= r.guestName %><br><small><%= r.email %></small></td>
-          <td class="py-2 px-3 border-b"><%= r.checkinDate %></td>
-          <td class="py-2 px-3 border-b"><%= r.checkoutDate %></td>
-          <td class="py-2 px-3 border-b"><%= r.days %></td>
-          <td class="py-2 px-3 border-b">$<%= r.total %></td>
-          <td class="py-2 px-3 border-b"><span class="px-2 py-1 rounded text-sm <%= r.status === 'checked_in' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>"><%= r.status %></span></td>
-          <td class="py-2 px-3 border-b"><%= r.paymentMethod %></td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
+<div class="card card-primary card-outline">
+
+    <!-- HEADER -->
+    <div class="card-header">
+
+        <h3 class="card-title">
+
+            <i class="fas fa-calendar-alt mr-2"></i>
+
+            Reservation Management
+
+        </h3>
+
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="card-body border-bottom">
+
+        <div class="row">
+
+            <div class="col-md-4 mb-2">
+
+                <div class="input-group">
+
+                    <input
+                        type="text"
+                        id="reservationSearch"
+                        class="form-control"
+                        placeholder="Search reservation...">
+
+                    <div class="input-group-append">
+
+                        <span class="input-group-text">
+
+                            <i class="fas fa-search"></i>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3 mb-2">
+
+                <select
+                    id="statusFilter"
+                    class="form-control">
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <%
+                    const statuses = [
+                        ...new Set(
+                            reservations
+                            .map(r => r.status)
+                            .filter(Boolean)
+                        )
+                    ];
+                    %>
+
+                    <% statuses.forEach(function(status){ %>
+
+                        <option value="<%= status %>">
+                            <%= status %>
+                        </option>
+
+                    <% }); %>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-3 mb-2">
+
+                <select
+                    id="paymentFilter"
+                    class="form-control">
+
+                    <option value="">
+                        All Payment Methods
+                    </option>
+
+                    <%
+                    const payments = [
+                        ...new Set(
+                            reservations
+                            .map(r => r.paymentMethod)
+                            .filter(Boolean)
+                        )
+                    ];
+                    %>
+
+                    <% payments.forEach(function(payment){ %>
+
+                        <option value="<%= payment %>">
+                            <%= payment %>
+                        </option>
+
+                    <% }); %>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-2 text-right">
+
+                <span class="badge badge-primary p-2">
+
+                    Records:
+
+                    <span id="recordCount">
+                        <%= reservations ? reservations.length : 0 %>
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="card-body table-responsive p-0">
+
+        <table
+            id="reservationTable"
+            class="table table-hover text-nowrap">
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Room</th>
+                    <th>Guest</th>
+                    <th>Check In</th>
+                    <th>Check Out</th>
+                    <th>Days</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <% if(reservations && reservations.length > 0){ %>
+
+                    <% reservations.forEach(function(r){ %>
+
+                    <tr class="reservation-row">
+
+                        <td>
+                            #<%= r.id %>
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                <%= r.roomNumber %>
+                            </strong>
+
+                            <br>
+
+                            <small class="text-muted">
+                                <%= r.roomName %>
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                <%= r.guestName %>
+                            </strong>
+
+                            <br>
+
+                            <small class="text-muted">
+                                <%= r.email %>
+                            </small>
+
+                        </td>
+
+                        <td>
+                            <%= r.checkinDate %>
+                        </td>
+
+                        <td>
+                            <%= r.checkoutDate %>
+                        </td>
+
+                        <td>
+                            <%= r.days %>
+                        </td>
+
+                        <td>
+
+                            <strong>
+
+                                ₦<%= Number(r.total || 0).toLocaleString() %>
+
+                            </strong>
+
+                        </td>
+
+                        <td class="status">
+
+                            <% if(r.status === 'checked_in'){ %>
+
+                                <span class="badge badge-success">
+
+                                    Checked In
+
+                                </span>
+
+                            <% } else if(r.status === 'checked_out'){ %>
+
+                                <span class="badge badge-secondary">
+
+                                    Checked Out
+
+                                </span>
+
+                            <% } else { %>
+
+                                <span class="badge badge-warning">
+
+                                    Reserved
+
+                                </span>
+
+                            <% } %>
+
+                        </td>
+
+                        <td class="payment">
+
+                            <span class="badge badge-info">
+
+                                <%= r.paymentMethod %>
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    <% }); %>
+
+                <% } else { %>
+
+                    <tr>
+
+                        <td colspan="9">
+
+                            <div class="text-center py-5">
+
+                                <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+
+                                <h5>No Reservations Found</h5>
+
+                                <p class="text-muted">
+
+                                    No reservation has been created yet.
+
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                <% } %>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- SEARCH EMPTY STATE -->
+    <div
+        id="noResults"
+        class="card-body text-center"
+        style="display:none;">
+
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+
+        <h5>No Matching Reservations Found</h5>
+
+        <p class="text-muted">
+
+            Try another search keyword or filter.
+
+        </p>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer clearfix">
+
+        <div class="float-left">
+
+            Page
+
+            <span id="currentPage">1</span>
+
+            of
+
+            <span id="totalPages">1</span>
+
+        </div>
+
+        <div class="float-right">
+
+            <button
+                id="prevBtn"
+                class="btn btn-default btn-sm">
+
+                Previous
+
+            </button>
+
+            <button
+                id="nextBtn"
+                class="btn btn-default btn-sm">
+
+                Next
+
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function(){
+
+    const searchInput =
+        document.getElementById('reservationSearch');
+
+    const statusFilter =
+        document.getElementById('statusFilter');
+
+    const paymentFilter =
+        document.getElementById('paymentFilter');
+
+    const rows =
+        [...document.querySelectorAll('.reservation-row')];
+
+    const recordCount =
+        document.getElementById('recordCount');
+
+    const currentPageSpan =
+        document.getElementById('currentPage');
+
+    const totalPagesSpan =
+        document.getElementById('totalPages');
+
+    const prevBtn =
+        document.getElementById('prevBtn');
+
+    const nextBtn =
+        document.getElementById('nextBtn');
+
+    const noResults =
+        document.getElementById('noResults');
+
+    let currentPage = 1;
+
+    let pageSize = 10;
+
+    function getFilteredRows(){
+
+        const search =
+            searchInput.value.toLowerCase();
+
+        const status =
+            statusFilter.value.toLowerCase();
+
+        const payment =
+            paymentFilter.value.toLowerCase();
+
+        return rows.filter(function(row){
+
+            const text =
+                row.innerText.toLowerCase();
+
+            const rowStatus =
+                row.querySelector('.status')
+                ?.innerText
+                .toLowerCase() || '';
+
+            const rowPayment =
+                row.querySelector('.payment')
+                ?.innerText
+                .toLowerCase() || '';
+
+            return (
+                text.includes(search) &&
+                (!status || rowStatus.includes(status)) &&
+                (!payment || rowPayment.includes(payment))
+            );
+
+        });
+
+    }
+
+    function renderTable(){
+
+        const filteredRows =
+            getFilteredRows();
+
+        rows.forEach(function(row){
+            row.style.display = 'none';
+        });
+
+        if(filteredRows.length === 0){
+
+            noResults.style.display = 'block';
+
+        }else{
+
+            noResults.style.display = 'none';
+
+        }
+
+        const totalPages =
+            Math.ceil(filteredRows.length / pageSize) || 1;
+
+        if(currentPage > totalPages){
+
+            currentPage = totalPages;
+
+        }
+
+        const start =
+            (currentPage - 1) * pageSize;
+
+        const end =
+            start + pageSize;
+
+        filteredRows
+            .slice(start, end)
+            .forEach(function(row){
+
+                row.style.display = '';
+
+            });
+
+        recordCount.textContent =
+            filteredRows.length;
+
+        currentPageSpan.textContent =
+            currentPage;
+
+        totalPagesSpan.textContent =
+            totalPages;
+
+        prevBtn.disabled =
+            currentPage === 1;
+
+        nextBtn.disabled =
+            currentPage === totalPages;
+
+    }
+
+    searchInput.addEventListener('input', function(){
+
+        currentPage = 1;
+
+        renderTable();
+
+    });
+
+    statusFilter.addEventListener('change', function(){
+
+        currentPage = 1;
+
+        renderTable();
+
+    });
+
+    paymentFilter.addEventListener('change', function(){
+
+        currentPage = 1;
+
+        renderTable();
+
+    });
+
+    prevBtn.addEventListener('click', function(){
+
+        if(currentPage > 1){
+
+            currentPage--;
+
+            renderTable();
+
+        }
+
+    });
+
+    nextBtn.addEventListener('click', function(){
+
+        const totalPages =
+            Math.ceil(
+                getFilteredRows().length / pageSize
+            );
+
+        if(currentPage < totalPages){
+
+            currentPage++;
+
+            renderTable();
+
+        }
+
+    });
+
+    renderTable();
+
+});
+
+</script>
